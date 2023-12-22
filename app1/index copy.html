@@ -22,16 +22,16 @@
 </div>
     </div>
     <div class="menu">
-        <a href="Javascript:loadpage('./results/index.html')">首頁</a>
+        <a href="index.html">首頁</a>
         <a href="Javascript:loadpage('./results/health.html')">健康天地</a>
-        <a href="Javascript:loadpage('./results/basketball.html")>籃球介紹</a>
-        <a href="Javascript:loadpage('./results/baseball.html")>棒球介紹</a>
-        <a href="Javascript:loadpage('./results/swimming.html")>游泳介紹</a>
-        <a href="Javascript:loadpage('./results/msgboard.html")>訪客留言</a>
-        <a href="Javascript:loadpage('./results/reference.html")>資料來源</a>
+        <a href="Javascript:loadpage('./results/basketball.html')">籃球介紹</a>
+        <a href="Javascript:loadpage('./results/baseball.html')">棒球介紹</a>
+        <a href="Javascript:loadpage('./results/swimming.html')">游泳介紹</a>
+        <a href="Javascript:loadpage('./results/msgboard.html')">訪客留言</a>
+        <a href="Javascript:loadpage('./results/reference.html')">資料來源</a>
     </div>
     <div class="content">
-      <!-- 使用js在這兒呈現 -->
+      
     </div>
     <div class="footer">
       網頁設計及維護：ＸＸＯＯＯ<br>
@@ -41,13 +41,15 @@
 </body>
 </html>
 <script>
-  loadpage("./results/main.html");
+
+loadpage("./results/main.html");
+
 //建立一個函式loadpage(page)用來載入內容至content區塊中
 function loadpage(page){
   $.get(page,(res)=>{
-    $('.content').html(res);
+    $(".content").html(res);
   })
-}
 
+}
 
 </script>
