@@ -50,6 +50,21 @@
     // )  
 
         //利用$.get()方法傳送請求並取得回應
+    $.get('https://kktix.com/events.json',(data)=>{
+
+        let events=data.entry;
+        // console.log(events);
+        events.forEach((event,idx)=>{
+            $("ul").append(`<li>
+                <div>${event.title}</div>
+                <div>${event.summary}</div>
+                <div>${event.content}</div>
+                </li>`)
+        })
+        $(".title").text(data.title)
+        $(".updated").text(data.updated)  
+
+    })
 
 
   </script>
