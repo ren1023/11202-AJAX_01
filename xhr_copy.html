@@ -15,7 +15,7 @@
     <div class="updated" ></div>
     <ul class="list-group"></ul>
 <script src="./plugin/js/jquery.js"></script>
-<script src="./plugin/js/bootstrap.js"></script>
+<script src="./plugin/js/bootstrap.js"></script>    
 </body>
 </html>
 <script>
@@ -31,35 +31,28 @@
     let xhr=new XMLHttpRequest
 
     //建立請求的各項設定及實質內容
-    //async-非同步
-    //sync-同步
+    //async - 非同步
+    //sync - 同步
     xhr.open('GET','https://kktix.com/events.json');
-
-   xhr.responseType= 'json'; //回傳的資料要求是要json格式
-
+    xhr.responseType = 'json';
     //建立得到回應時的各項設定及行為
     xhr.onload=function(){  
-    let type=xhr.getResponseHeader("Content-Type");
-    let status=xhr.status  //狀態碼
-    // let response=xhr.responseText  //回應轉成文字
-    let response=xhr.response
-    // document.write(response)    //資料寫在網頁上
-    // let res=JASON.parse(response)   //使用
-    console.log(response) //在console.log印出
-    let events=response.entry;
-    // console.log(events)
-    events.forEach((event,idx)=>{
-        $("ul").append("<li>"+event.title+"</li>")
-
-    })
-    $(".title").text(response.title)
-    $(".updated").text(response.updated)
-
+        let type=xhr.getResponseHeader("Content-Type");
+        let status=xhr.status
+        //let response=xhr.responseText
+        let response=xhr.response
+        //let res=JSON.parse(response) //轉換文字為json格式的物件
+        console.log(response)
+        let events=response.entry;
+        //console.log(events);
+        events.forEach((event,idx)=>{
+            $("ul").append("<li>"+event.title+"</li>")
+        })
+        $(".title").text(response.title)
+        $(".updated").text(response.updated)
 
 }
 
-
     //送出請求
-    xhr.send();
-
+    xhr.send()
     </script>

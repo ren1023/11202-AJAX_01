@@ -6,15 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>jQuery</title>
     <link rel="shortcut icon" href="#" type="image/x-icon">
+    <link rel="stylesheet" href="./plugin/css/bootstrap.css">
     <link rel="stylesheet" href="style.css">
       <!-------引入jQuery函式庫------->
 </head>
 <body>
     <h1 class="header">jQuery</h1>
     <div class="title"></div>
-    <h4></h4>
-    <ul></ul>
-    
+    <div class="updated" ></div>
+    <ul class="list-group"></ul>
+<script src="./plugin/js/jquery.js"></script>
+<script src="./plugin/js/bootstrap.js"></script>    
 </body>
 </html>
 <script>
@@ -26,18 +28,28 @@
     ********************************************************/
      
     //利用$.ajax()方法傳送請求並取得回應
-    /* $.ajax(
-      {
-        url:'',
-        type:'',
-        success:,
-        error:,
-        complete:
-      }
-    ) */   
+    // $.ajax(
+    //   {
+    //     url:'https://kktix.com/events.json',
+    //     type:'get',
+    //     success:(data)=>{
+    //       // console.log(data)
+    //       let events=data.entry;
+    //         //console.log(events);
+    //         events.forEach((event,idx)=>{
+    //             $("ul").append(`<li class='list-group-item list-group-item-action'>
+    //                                 <div>${event.title}</div>
+    //                             <div>${event.summary}</div>
+    //                             <div>${event.content}</div>
+    //                         </li>`)})
 
-    
-    //利用$.get()方法傳送請求並取得回應
+    //         $(".title").text(data.title)
+    //         $(".updated").text(data.updated)             
+    //     }
+    //   }
+    // )  
+
+        //利用$.get()方法傳送請求並取得回應
 
 
   </script>
