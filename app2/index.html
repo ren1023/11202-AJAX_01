@@ -91,7 +91,7 @@
                       <div class="card-text">${data.uni_id}</div>
                       <div class='controls'>
                       <a href="#" class="btn btn-primary">編輯</a>
-                      <a href="#" class="btn btn-danger">刪除</a>
+                      <a href="Javascript:del(${data.id})" class="btn btn-danger">刪除</a> 
                     </div>
                   </div>
                 </div></div>`
@@ -101,11 +101,18 @@
 //將撈取的資料，套用card的形式，在螢幕上印出__end
 
 
-
+ 
   //編輯資料的函式
   function update() {
   }
   //刪除資料的函式
-  function del() {
+  function del(id) {
+    let con=confirm("確定要刪除嗎？")
+    if(con){
+      $.post('./api/delete.php',{id},(res)=>{
+        //只將id向後端傳送，待後端回應後，再將前端的html資料的那個畫面移除，這個只會耗1個byte，很省資源。
+        $(`#user${id}`).remove()  //jquery的指令
+      })
+    }
   }
 </script>
