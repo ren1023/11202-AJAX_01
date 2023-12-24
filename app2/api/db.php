@@ -145,4 +145,5 @@ function to($url){
 $Student=new DB('students');
 $Class=new DB('classes');
 $ClassStudent=new DB('class_student');
+
 ?>

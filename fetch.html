@@ -26,37 +26,35 @@
     * 4.建立錯誤處理
     ********************************************************/
 
-    //建立FETCH請求及實質內容
-    fetch('https://kktix.com/events.json',
-        {method :'get',
-            headers:{'Content-Type':'application/x-www-form-urlencoded'}
-            })
-        .then(function(response){
-            
-            //回傳是josn時
-            return response.json()
-            
-            //回傳是text時
-            // return response.text()
-
+   //建立FETCH請求及實質內容
+fetch('https://kktix.com/events.json',
+        {method :'get',  // 指定請求方法為GET
+         headers:{'Content-Type':'application/x-www-form-urlencoded'} // 設定請求頭，指定內容類型
         })
-        .then(function(data){ 
-	
-    console.log(data)
-    let events=data.entry;
+    .then(function(response){
+        //處理響應
+        //回傳是json時
+        return response.json()  // 解析響應為JSON，返回一個Promise
+        
+        //回傳是text時
+        // return response.text()  // 如果響應是純文本，使用這行代替上一行
+
+    })
+    .then(function(data){ 	
+        console.log(data)  // 在控制台輸出解析後的數據
+        let events=data.entry;  // 獲取數據中的entry字段
         //console.log(events);
-        events.forEach((event,idx)=>{
+        events.forEach((event,idx)=>{  // 遍歷事件數據，並動態添加到ul列表中
                 $("ul").append(`<li class='list-group-item list-group-item-action'>
-                                    <div>${event.title}</div>
+                                <div>${event.title}</div>
                                 <div>${event.summary}</div>
                                 <div>${event.content}</div>
-                            </li>`)})
+                                </li>`)})
 
-            $(".title").text(data.title)
-            $(".updated").text(data.updated)   
+        $(".title").text(data.title)  // 設置.title元素的文本為數據的title
+        $(".updated").text(data.updated)   // 設置.updated元素的文本為數據的updated
     
-    })
-
+})
 
 // ```
 

@@ -14,8 +14,8 @@
     <h4 class="title"></h4>
     <div class="updated" ></div>
     <ul class="list-group"></ul>
-<script src="./plugin/js/jquery.js"></script>
-<script src="./plugin/js/bootstrap.js"></script>
+<script src="./plugin/js/jquery.js"></script> <!-- 引入jquery -->
+<script src="./plugin/js/bootstrap.js"></script> <!-- 引入bootstrap的javascript -->
 </body>
 </html>
 <script>
@@ -31,26 +31,25 @@
     let xhr=new XMLHttpRequest
 
     //建立請求的各項設定及實質內容
-    //async-非同步
-    //sync-同步
-    xhr.open('GET','https://kktix.com/events.json');
+    //async-非同步：以買麥當勞為例，你請熊貓代買，你去做其它的事，等代買幫你買，但代買什麼時侯回來，你不知道。
+    //sync-同步：網頁在做ajax請求時，網頁會暫停，等ajax處理完後，才會繼續運行。
+    xhr.open('GET','https://kktix.com/events.json'); /* 使用get的方式，得到此網址的json檔 ，預設是非同步*/
 
-   xhr.responseType= 'json'; //回傳的資料要求是要json格式
+    xhr.responseType= 'json'; //回傳的資料要求是要json格式
 
     //建立得到回應時的各項設定及行為
-    xhr.onload=function(){  
-    let type=xhr.getResponseHeader("Content-Type");
-    let status=xhr.status  //狀態碼
-    // let response=xhr.responseText  //回應轉成文字
-    let response=xhr.response
-    // document.write(response)    //資料寫在網頁上
-    // let res=JASON.parse(response)   //使用
-    console.log(response) //在console.log印出
-    let events=response.entry;
-    // console.log(events)
-    events.forEach((event,idx)=>{
+    xhr.onload=function(){  //如果成功得到回應的值，放在onload的變數裡。
+        // let type=xhr.getResponseHeader("Content-Type"); //拿到的東西，資料的型態 
+        // let status=xhr.status  //網頁傳送回應的狀態碼
+        // let response=xhr.responseText  //回應轉成文字
+        let response=xhr.response  //直接使用回應值，不需再轉別的型態，因為在前面已經宣告為json格式
+        // document.write(response)    //資料寫在網頁上
+        // let res=JASON.parse(response)   //使用
+        console.log(response) //在console.log印出
+        let events=response.entry;
+        // console.log(events)
+        events.forEach((event,idx)=>{
         $("ul").append("<li>"+event.title+"</li>")
-
     })
     $(".title").text(response.title)
     $(".updated").text(response.updated)

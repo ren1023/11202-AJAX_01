@@ -50,21 +50,25 @@
     // )  
 
         //利用$.get()方法傳送請求並取得回應
-    $.get('https://kktix.com/events.json',(data)=>{
+    // 使用jQuery的$.get方法發出GET請求
+$.get('https://kktix.com/events.json',(data)=>{
 
-        let events=data.entry;
-        // console.log(events);
-        events.forEach((event,idx)=>{
-            $("ul").append(`<li>
-                <div>${event.title}</div>
-                <div>${event.summary}</div>
-                <div>${event.content}</div>
-                </li>`)
-        })
-        $(".title").text(data.title)
-        $(".updated").text(data.updated)  
+let events=data.entry;  // 從回應數據中提取entry屬性，通常包含事件列表
+// 遍歷每個事件，並將其顯示在頁面上的UL元素中
+events.forEach((event,idx)=>{
+    $("ul").append(`<li>
+        <div>${event.title}</div>  // 顯示事件標題
+        <div>${event.summary}</div>  // 顯示事件摘要
+        <div>${event.content}</div>  // 顯示事件內容
+        </li>`)
+})
+$(".title").text(data.title)  // 將.title元素的文本設置為數據的標題
+$(".updated").text(data.updated)  // 將.updated元素的文本設置為數據的更新時間
 
-    })
+})
 
+/*
+這段程式碼主要通過jQuery的$.get方法從 "https://kktix.com/events.json" 獲取數據。它接收到數據後，提取了其中的entry字段，並遍歷其中的每一個事件，將其標題、摘要和內容動態添加到頁面的<ul>元素中。最後，它更新了頁面上的.title和.updated元素，以顯示從數據中獲取的標題和更新時間。這是一個常見的用於Web前端從遠程API獲取和顯示數據的方法。
+*/
 
   </script>

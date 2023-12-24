@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>學生資料管理系統</title>
-    <link rel="shortcut icon" href="#" type="image/x-icon">
-    <link rel="stylesheet" href="../plugin/css/bootstrap.css">
-    <link rel="stylesheet" href="style.css">
-    <!---匯入要使用的函式庫--->
-    <script src="jquery.js"></script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>學生資料管理系統</title>
+  <link rel="shortcut icon" href="#" type="image/x-icon">
+  <link rel="stylesheet" href="../plugin/css/bootstrap.css">
+  <link rel="stylesheet" href="style.css">
+  <!---匯入要使用的函式庫--->
+  <script src="jquery.js"></script>
 </head>
 <body>
   <h1 class="header">學生資料管理系統</h1>
@@ -20,81 +19,93 @@
       <button class="btn btn-warning mx-2 my-2" onclick="query('sex',2)">女生</button>
     </div>
     <div class="classes mx-2 my-3">
+   <!-- 將班級的資料呈現在此位置_queryClasses();-->
     </div>
   </div>
-  <div class="users d-flex flex-wrap mx-auto my-3" style="width:64%"></div>
+  <div class="users d-flex flex-wrap  mx-auto my-3 " style="width: 64%;">
+    <!-- 撈取學生資料_queryAll() -->
+  </div>
 </body>
 </html>
 <script>
-/************************************
-* 1.考慮觸發行為的事件
-* 2.建立監聽行為
-* 3.考慮是否需要代入參數
-* 4.是否會有回傳值？回傳值的功用及處理？
-* 5.是否需要更新畫面內容？更新畫面的方法？
-************************************/
-queryAll();
-queryClasses();
-//新增資料的函式
-function create(){
+  /************************************
+  * 1.考慮觸發行為的事件
+  * 2.建立監聽行為
+  * 3.考慮是否需要代入參數
+  * 4.是否會有回傳值？回傳值的功用及處理？
+  * 5.是否需要更新畫面內容？更新畫面的方法？
+  ************************************/
+  queryAll();//撈取所有學生的資料
+  queryClasses(); //撈取該班的所有學生
 
-}
 
-//查詢資料的函式
-function query(type,value){
-  $.get(`./api/query.php?do=${type}`,{value},(res)=>{
-    console.log(res)
-    render(res)
-  })
-}
-function queryClasses(){
-  $.get("./api/query.php?do=classes",(classes)=>{
-    //console.log(classes)
+
+
+  //新增資料的函式
+  function create() {
+  }
+
+
+  //查詢資料的函式
+  function query(type, value) { //輸入函數，可以查詢男生,女生
+    $.get(`./api/query.php?do=${type}`,{value},(res)=>{ //type=sex,class；value=1,2,101,102
+      console.log(res)
+      render(res)//在畫面上印出來
+    })
+  }
+
+  function queryClasses(){
+    $.get("./api/query.php?do=classes", (classes)=>{  //使用get的方法，去./api/query.php執行程式，並將do=classes用get的方法傳給qurey.php
+      // $(".classes").html(classes);
     let class_btns;
-    classes.forEach((c,idx)=>{
-      class_btns=`<button class='btn btn-info m-2' onclick="query('class',${c.code})">
-                  ${c.name}
-                  </button>`  
-    $(".classes").append(class_btns)
-})
-})  
-}
-function queryAll(){
-$.get("./api/query.php?do=all",(users)=>{
-  render(users)
-})
-}
+    classes.forEach((c, idx) => {
+      class_btns = `<button class='btn btn-info m-2' onclick="query('class',${c.code})"">
+                    ${c.name}
+                    </button>`
+      $(".classes").append(class_btns) 
+    })
+    })
+  }
 
-function render(datas){
-  $(".users").html("")
-  let data_layout;
-  datas.forEach((data,idx)=>{
-    data_layout=`<div class="p-2">
-      <div class="card" style="width: 18rem;">
-  <div class='name text-center bolder fs-3'>${data.name}</div>
-  <div class="card-body">
-    <h5 class="card-title">${data.school_num}</h5>
-    <div class="card-text">${data.birthday}</div>
-    <div class="card-text">${data.uni_id}</div>
-    <div class='controls'>
-      <a href="#" class="btn btn-primary">編輯</a>
-      <a href="#" class="btn btn-danger">刪除</a>
-    </div>
-  </div>
-</div></div>`
+
+
+  function queryAll() {  //撈出所有學生資料
+    $.get("./api/query.php?do=all", (users)=>{  //使用get的方法，去./api/query.php執行程式，並將do=all用get的方法傳給qurey.php
+      // users=JSON.parse(users)  //如果用getJSON有問題，就改用這個。
+    render(users)
+      // console.log(users)
+    })
+  }
   
-    $(".users").append(data_layout)
-  })
-}
+  //將撈取的資料，套用card的形式，在螢幕上印出__start
+  function render(datas) { 
+    $(".users").html("")  //因為下面用append，所以每次開始時，要將資料清空
+    let data_layout;
+    datas.forEach((data, idx) => {
+    data_layout = `<div class ="p-2" id='user${data.id}'>
+            <div class="card" style="width: 18rem;">
+                  <div class='name text-center bolder fs-3'>${data.name}</div>
+                  <div class="card-body">
+                      <h5 class="card-title">${data.school_num}</h5>
+                      <div class="card-text">${data.birthday}</div>
+                      <div class="card-text">${data.uni_id}</div>
+                      <div class='controls'>
+                      <a href="#" class="btn btn-primary">編輯</a>
+                      <a href="#" class="btn btn-danger">刪除</a>
+                    </div>
+                  </div>
+                </div></div>`
+      $(".users").append(data_layout) 
+    })
+  }
+//將撈取的資料，套用card的形式，在螢幕上印出__end
 
-//編輯資料的函式
-function update(){
 
-}
 
-//刪除資料的函式
-function del(){
-
-}
-
+  //編輯資料的函式
+  function update() {
+  }
+  //刪除資料的函式
+  function del() {
+  }
 </script>
