@@ -9,7 +9,7 @@ switch($_GET['do']){
     case 'sex':
         $users=$Student->q("select `name`,`uni_id`,`school_num`,`birthday` from `students` where substr(`uni_id`,2,1)='{$_GET['value']}'");
 
-        header('Content-Type: application/json; charset=utf-8');        
+        header('Content-Type: application/json; charset=utf-8');
         echo json_encode($users);
     break;
     case 'class':

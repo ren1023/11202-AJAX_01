@@ -52,7 +52,7 @@
   </div>
 
   <div id="modals">
-    <!-- 使用ajax放到這 -->
+    <!-- 使用ajax放到這 自動彈出視窗，可以新增學生資料及更新學生資料_user_form.php -->
   </div>
 
 
@@ -63,6 +63,8 @@
 </html>
 <script>
 
+
+//製作一個搜尋輸入窗，會自動提示字元，例如：當輸入學生姓名：張，則自動提示名字給你選，
 //此段在上面表單的#search-input，接收到輸入的值後，再透過get的請求方法去後端的php取資料
   let input
   $("#search-input").on('input', () => {
@@ -76,10 +78,13 @@
     })
   })
 
+
+
+  /*學生資料修改彈出視窗_start*/
   let stuModal
   function popForm(type, id = null) {
     switch (type) {
-      case 'add':
+      case 'add'://學生資料新增
         $.get('./api/user_form.php', (form) => {  //(form)表示是回傳的內容
           //把表單放到modals裡
           $("#modals").html(form) 
@@ -92,21 +97,21 @@
           //製作畢業學校的選單事件
           $("#studentForm").on('show.bs.modal', () => { //id等於studentForm時，在這個modal show出時
 
-            $.get("./api/get_schools.php", (options) => { //去後端執行 ./api/get_schools.php，並將資料(學校資料)取出
+        $.get("./api/get_schools.php", (options) => { //去後端執行 ./api/get_schools.php，並將資料(學校資料)取出
               $("#schools").html(options)  // 在 id等於schools，這個element下印出 options是從get_schools.php來的
             })
           })
 
           //觸發顯示
           stuModal.show("studentForm")  //在呈現 studentForm
-
         })
         break;
-
-      case 'edit':
+        
+      case 'edit': //學生資料編輯
         // console.log('送出前的id' + id)
         $.get("./api/user_form.php", { id }, (form) => {
-          console.log(form);
+          // console.log(form);
+
           //先把表單放到#modal裏
           $("#modals").html(form)
 
@@ -128,9 +133,8 @@
         })
         break;
     }
-
-
   }
+  /*學生資料修改彈出視窗_end*/
 
 
 
