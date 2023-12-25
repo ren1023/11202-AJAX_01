@@ -33,11 +33,11 @@
     <div class="all mx-2 my-3 col-1">
       <button class="btn btn-success mx-2 my-2" onclick="queryAll()">全部</button>
     </div>
-    <div class="sex mx-2 my-3">
+    <div class="sex mx-2 my-3 col-2">
       <button class="btn btn-primary mx-2 my-2" onclick="query('sex',1)">男生</button>
       <button class="btn btn-warning mx-2 my-2" onclick="query('sex',2)">女生</button>
     </div>
-    <div class="classes mx-2 my-3">
+    <div class="classes mx-2 my-3 col-9">
       <!-- 將班級的資料呈現在此位置_queryClasses();-->
     </div>
   </div>
@@ -81,9 +81,11 @@
     switch (type) {
       case 'add':
         $.get('./api/user_form.php', (form) => {  //(form)表示是回傳的內容
-          $("#modals").html(form)  //把表單放到modals裡
-
-          stuModal = new bootstrap.Modal('#studentForm', {  //宣告 modal的存在
+          //把表單放到modals裡
+          $("#modals").html(form) 
+          
+          //宣告 modal的存在
+          stuModal = new bootstrap.Modal('#studentForm', {  
             keyboard: false
           })
 
@@ -115,8 +117,8 @@
 
           //註冊modal的顯示事件
           $("#studentForm").on('show.bs.modal', () => {
-            $.get("./api/get_schools.php", (options) => {
-              $("#schools").html(options)
+            $.get("./api/get_schools.php",{id}, (options) => {
+                $("#schools").html(options)
             })
           })
 
@@ -158,9 +160,8 @@
       render(res)//在畫面上印出來
 
       if (type == 'class') {
-        $(".class-btn.btn.btn-sueecss").addClass('btn-info')
+        $(".class-btn.btn.btn-success").addClass('btn-info')
         $(".class-btn.btn.btn-success").removeClass('btn-success')
-
         $("#b" + value).addClass('btn-success');
         $("#b" + value).removeClass('btn-info');
       }
@@ -173,7 +174,7 @@
       // $(".classes").html(classes);
       let class_btns;
       classes.forEach((c, idx) => {
-        class_btns = `<button class='class-btn btn btn-info m-2' onclick="query('class',${c.code})"">
+        class_btns = `<button id="b${c.code}" class='class-btn btn btn-info m-2' onclick="query('class',${c.code})">
                     ${c.name}
                     </button>`
         $(".classes").append(class_btns)

@@ -1,9 +1,7 @@
 <?php
 include_once "db.php";
-
 $schools=$GraduateSchool->all();
 $options="";
-
 if(isset($_GET['id'])){
     $user=$Student->find($_GET['id']);  //如果有id，則去撈學生的資料
 }

@@ -52,7 +52,7 @@
                         </div>
                         <div class='mb-3 col-6'>
                             <label for="schools" class="form-label">畢業學校</label>
-                            <select name="graduate_at" class="form-select" aria-label="Default select" >
+                            <select id="schools"  name="graduate_at" class="form-select" aria-label="Default select" >
                                 <!-- 製作畢業學校的選單事件 -->
                             </select>
                         </div>
