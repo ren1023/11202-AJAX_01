@@ -11,6 +11,16 @@
   <link rel="stylesheet" href="style.css">
   <!---匯入要使用的函式庫--->
   <script src="jquery.js"></script>
+  <style>
+    #relation {
+      border: 1px solid #ccc;
+      width: 93.5%;
+      position: relative;
+      left: 74px;
+      top: -1px;
+      display: none;
+    }
+  </style>
 
 </head>
 
@@ -20,6 +30,9 @@
   </h1>
 
   <div class="container d-flex">
+    <div class="all mx-2 my-3 col-1">
+      <button class="btn btn-success mx-2 my-2" onclick="queryAll()">全部</button>
+    </div>
     <div class="sex mx-2 my-3">
       <button class="btn btn-primary mx-2 my-2" onclick="query('sex',1)">男生</button>
       <button class="btn btn-warning mx-2 my-2" onclick="query('sex',2)">女生</button>
@@ -28,11 +41,18 @@
       <!-- 將班級的資料呈現在此位置_queryClasses();-->
     </div>
   </div>
+  <div class="input-group mb-3 container">
+    <span class="input-group-text" id="basic-addon1">search</span>
+    <input id="search-input" type="text" class="form-control">
+    <div id="relation"></div>
+  </div>
+
   <div class="users d-flex flex-wrap  mx-auto my-3 " style="width: 64%;">
     <!-- 撈取學生資料_queryAll() -->
   </div>
 
   <div id="modals">
+    <!-- 使用ajax放到這 -->
   </div>
 
 
@@ -42,17 +62,19 @@
 
 </html>
 <script>
-  //   // modal事件宣告(new modal)
-  //   const stuModal = new bootstrap.Modal('#studentForm', {
-  //   keyboard: false
-  // })
 
-  // //製作畢業學校的選單事件
-  // $("#studentForm").on('show.bs.modal',()=>{ //id等於studentForm時，在這個modal show出時
-
-  //   $.get("./api/get_schools.php",(options)=>{ //去後端執行 ./api/get_schools.php，並將資料取出
-  //     $("#schools").html(options)  // 在 id等於schools，這個element下印出 options是從get_schools.php來的
-  //   })
+//此段在上面表單的#search-input，接收到輸入的值後，再透過get的請求方法去後端的php取資料
+  let input
+  $("#search-input").on('input', () => {
+    // 當輸入框的值發生變化時，獲取輸入框的當前值
+    input=$("#search-input").val() 
+    // 使用$.get方法發送一個GET請求到"./api/search.php"
+    // 並且將當前輸入框的值作為參數傳遞
+    $.get("./api/search.php", {input}, (result) => {
+      $("#relation").html(result)
+      $("#relation").show()
+    })
+  })
 
   let stuModal
   function popForm(type, id = null) {
@@ -60,6 +82,7 @@
       case 'add':
         $.get('./api/user_form.php', (form) => {  //(form)表示是回傳的內容
           $("#modals").html(form)  //把表單放到modals裡
+
           stuModal = new bootstrap.Modal('#studentForm', {  //宣告 modal的存在
             keyboard: false
           })
@@ -67,7 +90,7 @@
           //製作畢業學校的選單事件
           $("#studentForm").on('show.bs.modal', () => { //id等於studentForm時，在這個modal show出時
 
-            $.get("./api/get_schools.php", (options) => { //去後端執行 ./api/get_schools.php，並將資料取出
+            $.get("./api/get_schools.php", (options) => { //去後端執行 ./api/get_schools.php，並將資料(學校資料)取出
               $("#schools").html(options)  // 在 id等於schools，這個element下印出 options是從get_schools.php來的
             })
           })
@@ -78,30 +101,31 @@
         })
         break;
 
-        case 'edit':
-          console.log('送出前的id' + id)
-          $.get("./api/user_form.php", { id }, (form) => {
-            console.log(form);
-            //先把表單放到#modal裏
-            $("#modals").html(form)
+      case 'edit':
+        // console.log('送出前的id' + id)
+        $.get("./api/user_form.php", { id }, (form) => {
+          console.log(form);
+          //先把表單放到#modal裏
+          $("#modals").html(form)
 
-            //宣告modal物件
-            stuModal = new bootstrap.Modal('#studentForm', {
-              keyboard: false
-            })
-
-            //註冊modal的顯示事件
-            $("#studentForm").on('show.bs.modal', () => {
-              $.get("./api/get_schools.php", (options) => {
-                $("#schools").html(options)
-              })
-            })
-
-            //觸發顯示
-            stuModal.show("studentForm")
+          //宣告modal物件
+          stuModal = new bootstrap.Modal('#studentForm', {
+            keyboard: false
           })
-          break;
-      }
+
+          //註冊modal的顯示事件
+          $("#studentForm").on('show.bs.modal', () => {
+            $.get("./api/get_schools.php", (options) => {
+              $("#schools").html(options)
+            })
+          })
+
+          //觸發顯示
+          stuModal.show("studentForm")
+          // console.log('userId=>'+id)
+        })
+        break;
+    }
 
 
   }
@@ -116,9 +140,9 @@
   * 5.是否需要更新畫面內容？更新畫面的方法？
   ************************************/
 
-  queryAll();//撈取所有學生的資料
-  queryClasses(); //撈取該班的所有學生
 
+  queryClasses(); //撈取該班的所有學生
+  query('class', 101);//撈取所有學生的資料
 
 
 
@@ -127,11 +151,20 @@
   }
 
 
-  //查詢資料的函式
-  function query(type, value) { //輸入函數，可以查詢男生,女生
+  //查詢資料的函式, //輸入函數，可以查詢男生,女生
+  function query(type, value) {
     $.get(`./api/query.php?do=${type}`, { value }, (res) => { //type=sex,class；value=1,2,101,102
       console.log(res)
       render(res)//在畫面上印出來
+
+      if (type == 'class') {
+        $(".class-btn.btn.btn-sueecss").addClass('btn-info')
+        $(".class-btn.btn.btn-success").removeClass('btn-success')
+
+        $("#b" + value).addClass('btn-success');
+        $("#b" + value).removeClass('btn-info');
+      }
+
     })
   }
 
@@ -140,7 +173,7 @@
       // $(".classes").html(classes);
       let class_btns;
       classes.forEach((c, idx) => {
-        class_btns = `<button class='btn btn-info m-2' onclick="query('class',${c.code})"">
+        class_btns = `<button class='class-btn btn btn-info m-2' onclick="query('class',${c.code})"">
                     ${c.name}
                     </button>`
         $(".classes").append(class_btns)

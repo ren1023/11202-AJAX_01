@@ -9,7 +9,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="./api/insert.php" method="post" class="row p-3">
+                    <form action="./api/save.php" method="post" class="row p-3">
                     <?php
                     if(isset($_GET['id'])){  /* 只要有id的欄位，就執行以下動作 */
                         include_once "db.php";
@@ -40,26 +40,36 @@
                         </div>
                         <div class="mb-3 col-6">
                             <label for="parents" class="form-label">家長</label>
-                            <input type="text" class="form-control" name="parents" id="parents">
+                            <input type="text" class="form-control" name="parents" id="parents" value="<?=$parents??'';?>">
                         </div>
                         <div class="mb-3 col-6">
                             <label for="tel" class="form-label">電話</label>
-                            <input type="text" class="form-control" name="tel" id="tel">
+                            <input type="text" class="form-control" name="tel" id="tel" value="<?=$tel??'';?>">
                         </div>
                         <div class="mb-3 col-6">
                             <label for="dept" class="form-label">科系</label>
-                            <input type="text" class="form-control" name="dept" id="dept">
+                            <input type="text" class="form-control" name="dept" id="dept" value="<?=$dept??'';?>">
                         </div>
                         <div class='mb-3 col-6'>
                             <label for="schools" class="form-label">畢業學校</label>
-                            <select name="graduate_at" class="form-select" aria-label="Default select" id="schools" >
+                            <select name="graduate_at" class="form-select" aria-label="Default select" >
                                 <!-- 製作畢業學校的選單事件 -->
                             </select>
                         </div>
                         <div class="mb-3 col-6">
                             <label for="status_code" class="form-label">畢業狀態</label>
-                            <input type="text" class="form-control" name="status_code" id="status_code">
+                            <input type="text" class="form-control" name="status_code" id="status_code" value="<?=$status_code??'';?>">
                         </div>
+                        <!-- 新增一個hidden的欄位id，來判斷是否要新增還是更新 -->
+                        <?php
+
+                            if(isset($_GET['id'])){
+                                echo "<input type='hidden' name='id' value='{$user['id']}'>";
+                            }
+
+
+                            ?>
+
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                         <button type="submit" class="btn btn-primary">
                         <?=(isset($_GET['id']))?'編輯更新':'確認新增';?>  <!-- 如果有id，顯示：編輯更新 ，如果沒有，就顯示 確認新增-->

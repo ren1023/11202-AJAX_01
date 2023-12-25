@@ -8,7 +8,7 @@ switch($_GET['do']){
         echo json_encode($Student->all());  //將搜尋的結果，轉成json格式，傳給前端
     break;
     case 'sex':
-        $users=$Student->q("select `name`,`uni_id`,`school_num`,`birthday` from `students` where substr(`uni_id`,2,1)='{$_GET['value']}'"); //uni_id欄位，從第二個字，取一個字的值。
+        $users=$Student->q("select `id`,`name`,`uni_id`,`school_num`,`birthday` from `students` where substr(`uni_id`,2,1)='{$_GET['value']}'"); //uni_id欄位，從第二個字，取一個字的值。
 
         header('Content-Type: application/json; charset=utf-8');        
         echo json_encode($users);
@@ -25,7 +25,7 @@ switch($_GET['do']){
             }
         }
         $in=join(',',$nums);// 再將陣列中的數字以"，"號，分隔開來，提供給下一個查詢中的in資料，做in的條件查詢。
-        $users=$Student->q("select `name`,`uni_id`,`school_num`,`birthday` from `students` where `id` in($in)");
+        $users=$Student->q("select `id`,`name`,`uni_id`,`school_num`,`birthday` from `students` where `id` in($in)");
 
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($users);
