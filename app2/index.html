@@ -54,26 +54,56 @@
   //     $("#schools").html(options)  // 在 id等於schools，這個element下印出 options是從get_schools.php來的
   //   })
 
-  let stuModal;
+  let stuModal
   function popForm(type, id = null) {
-    $.get('./api/user_form.php', (form) => {  //(form)表示是回傳的內容
-      $("#modals").html(form)  //把表單放到modals裡
-      stuModal = new bootstrap.Modal('#studentForm', {  //宣告 modal的存在
-        keyboard: false
-      })
+    switch (type) {
+      case 'add':
+        $.get('./api/user_form.php', (form) => {  //(form)表示是回傳的內容
+          $("#modals").html(form)  //把表單放到modals裡
+          stuModal = new bootstrap.Modal('#studentForm', {  //宣告 modal的存在
+            keyboard: false
+          })
 
-      //製作畢業學校的選單事件
-      $("#studentForm").on('show.bs.modal', () => { //id等於studentForm時，在這個modal show出時
+          //製作畢業學校的選單事件
+          $("#studentForm").on('show.bs.modal', () => { //id等於studentForm時，在這個modal show出時
 
-        $.get("./api/get_schools.php", (options) => { //去後端執行 ./api/get_schools.php，並將資料取出
-          $("#schools").html(options)  // 在 id等於schools，這個element下印出 options是從get_schools.php來的
+            $.get("./api/get_schools.php", (options) => { //去後端執行 ./api/get_schools.php，並將資料取出
+              $("#schools").html(options)  // 在 id等於schools，這個element下印出 options是從get_schools.php來的
+            })
+          })
+
+          //觸發顯示
+          stuModal.show("studentForm")  //在呈現 studentForm
+
         })
-      })
+        break;
 
-      //觸發顯示
-      stuModal.show("studentForm")  //在呈現 studentForm
+        case 'edit':
+          console.log('送出前的id' + id)
+          $.get("./api/user_form.php", { id }, (form) => {
+            console.log(form);
+            //先把表單放到#modal裏
+            $("#modals").html(form)
 
-    })
+            //宣告modal物件
+            stuModal = new bootstrap.Modal('#studentForm', {
+              keyboard: false
+            })
+
+            //註冊modal的顯示事件
+            $("#studentForm").on('show.bs.modal', () => {
+              $.get("./api/get_schools.php", (options) => {
+                $("#schools").html(options)
+              })
+            })
+
+            //觸發顯示
+            stuModal.show("studentForm")
+          })
+          break;
+      }
+
+
   }
 
 
@@ -141,7 +171,7 @@
                       <div class="card-text">${data.birthday}</div>
                       <div class="card-text">${data.uni_id}</div>
                       <div class='controls'>
-                      <a href="#" class="btn btn-primary">編輯</a>
+                      <a href="Javascript:popForm('edit',${data.id})" class="btn btn-primary">編輯</a>
                       <a href="Javascript:del(${data.id})" class="btn btn-danger">刪除</a> 
                     </div>
                   </div>
